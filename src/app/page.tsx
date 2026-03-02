@@ -184,31 +184,23 @@ export default function HomePage() {
       {/* ============================================================
        * HERO SECTION
        * ============================================================ */}
-      <section className="relative overflow-hidden pb-20 pt-16 md:pt-24 md:pb-32 bg-slate-900 texture-grain">
-        {/* 절대경로 백그라운드 이미지 */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 mix-blend-screen"
-          style={{ backgroundImage: "url('/hero-bg.png')" }}
-        />
-        {/* 그라데이션 오버레이 */}
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-emerald-900/60 to-gray-50/0 pointer-events-none" />
+      <section className="relative overflow-hidden pb-20 pt-16 md:pt-24 md:pb-32 bg-[#209B8A] texture-grain">
+        {/* =======================================================
+         * 럭셔리 청록/에메랄드 그라데이션 베이스 (User Custom)
+         * ======================================================= */}
+        {/* 베이스 그라데이션: 사용자가 제공한 세련된 청록 빛 */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2BB194] via-[#239E8A] to-[#127278] pointer-events-none" />
 
-        {/* 동적 글로우 효과 */}
-        {/* 프리미엄 배경 요소 */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none mix-blend-color-dodge">
-          <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-emerald-500/30 blur-[100px] rounded-full animate-pulse-slow" />
-          <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-cyan-500/30 blur-[100px] rounded-full animate-pulse-slow" style={{ animationDelay: "2s" }} />
-
-          {/* 플로팅 입자 */}
-          <div className="absolute top-20 left-[10%] w-16 h-16 opacity-30 animate-float" style={{ animationDelay: "0s" }}>
-            <img src="/icon-omega.png" alt="Omega" className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
-          </div>
-          <div className="absolute top-40 right-[15%] w-20 h-20 opacity-30 animate-float" style={{ animationDelay: "0.8s" }}>
-            <img src="/icon-brain.png" alt="Brain" className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(45,212,191,0.5)]" />
-          </div>
-          <div className="absolute bottom-20 left-[20%] text-4xl opacity-20 filter blur-[1px] animate-float" style={{ animationDelay: "1.5s" }}>⚗️</div>
-          <div className="absolute bottom-40 right-[25%] text-5xl opacity-20 filter blur-[1px] animate-float" style={{ animationDelay: "0.3s" }}>🔬</div>
+        {/* 부드러운 오로라/블러 오브젝트 (Floating Fluid Shapes) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none mix-blend-overlay opacity-60">
+          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#A7F3D0]/40 blur-[120px] rounded-full animate-pulse-slow" />
+          <div className="absolute top-[30%] right-[-20%] w-[50%] h-[70%] bg-[#0B5C60]/60 blur-[150px] rounded-full animate-pulse-slow" style={{ animationDelay: "3s" }} />
+          <div className="absolute bottom-[-10%] left-[20%] w-[40%] h-[40%] bg-emerald-400/30 blur-[100px] rounded-full animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
         </div>
+
+        {/* 고급스러운 빛 번짐 (Light Streaks) 및 다크 비네팅 */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent skew-y-12 scale-150 pointer-events-none mix-blend-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-[#0A4145]/40 pointer-events-none mix-blend-multiply" />
 
         {/* 하단 페이드 아웃 - 아래 섹션(bg-gray-50)과 자연스럽게 연결 */}
         <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-gray-50 via-gray-50/80 to-transparent pointer-events-none" />

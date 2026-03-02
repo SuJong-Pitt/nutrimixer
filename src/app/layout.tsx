@@ -58,7 +58,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
         />
       </head>
-      <body className="antialiased font-sans bg-white selection:bg-emerald-100 selection:text-emerald-900">
+      <body className="antialiased font-sans bg-white" suppressHydrationWarning>
         <TooltipProvider delayDuration={300}>
 
           <main className="relative">

@@ -57,6 +57,11 @@
     /* 한글 가독성 향상 */
   }
 
+  *::selection {
+    background-color: #d1fae5;
+    color: #064e3b;
+  }
+
   h1,
   h2,
   h3,
