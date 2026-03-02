@@ -43,3 +43,4 @@ next-env.d.ts
 .md
 mock-data.ts
 .env.local
+.agent
