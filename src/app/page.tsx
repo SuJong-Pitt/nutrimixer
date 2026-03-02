@@ -223,7 +223,7 @@ export default function HomePage() {
           </div>
 
           {/* 헤드라인 */}
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+          <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight px-2">
             내 영양제들,
             <br />
             <span className="text-yellow-300">같이 먹어도 괜찮을까?</span>
@@ -245,10 +245,10 @@ export default function HomePage() {
               <Input
                 ref={searchRef}
                 type="text"
-                placeholder="어떤 영양제를 찾으시나요? (비타민C, 오메가-3...)"
+                placeholder="어떤 영양제를 찾으시나요? (비타민C, 오메가...)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 text-base md:text-lg h-12 flex-1 font-medium"
+                className="bg-transparent border-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-lg h-12 flex-1 font-medium"
               />
               <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-[10px] font-bold text-white/60 uppercase tracking-widest mr-2">
                 <span>Press</span>
@@ -258,7 +258,7 @@ export default function HomePage() {
           </div>
 
           {/* 통계 배지 */}
-          <div className="flex items-center justify-center gap-4 mt-6 flex-wrap">
+          <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
             {[
               { label: "영양제 종류", value: isLoadingList ? "..." : `${dbIngredients.length}종` },
               { label: "무료 분석", value: "무제한" },
@@ -266,10 +266,10 @@ export default function HomePage() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/20"
+                className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm rounded-full px-2.5 py-1.5 border border-white/20"
               >
-                <span className="text-white/60 text-xs">{stat.label}</span>
-                <span className="text-white font-bold text-sm">{stat.value}</span>
+                <span className="text-white/60 text-[10px] sm:text-xs">{stat.label}</span>
+                <span className="text-white font-bold text-xs sm:text-sm">{stat.value}</span>
               </div>
             ))}
           </div>
@@ -295,7 +295,7 @@ export default function HomePage() {
                 많이 찾는 영양제
               </h2>
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 stagger-children">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger-children">
               {popularIngredients.map((ing) => (
                 <IngredientCard key={ing.id} ingredient={ing} />
               ))}
@@ -344,7 +344,7 @@ export default function HomePage() {
               <p className="font-medium animate-pulse">영양제 목록을 불러오는 중입니다...</p>
             </div>
           ) : filteredIngredients.length > 0 ? (
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 stagger-children">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger-children">
               {filteredIngredients.map((ing) => (
                 <IngredientCard key={ing.id} ingredient={ing} />
               ))}
