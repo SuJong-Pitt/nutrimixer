@@ -20,8 +20,8 @@ export default function FloatingBasketBar({ onAnalyze }: FloatingBasketBarProps)
 
     // 영양제가 선택되면 바가 올라오는 애니메이션
     useEffect(() => {
-        setIsVisible(count > 0 && !hasResult);
-    }, [count, hasResult]);
+        setIsVisible(count > 0);
+    }, [count]);
 
     if (!isVisible) return null;
 
@@ -82,29 +82,29 @@ export default function FloatingBasketBar({ onAnalyze }: FloatingBasketBarProps)
                         {/* 바구니 아이콘 + 카운트 */}
                         <button
                             onClick={() => setIsExpanded(!isExpanded)}
-                            className="flex items-center gap-2.5 flex-1 text-white"
+                            className="flex items-center gap-3 flex-1 text-white min-w-0"
                         >
-                            <div className="relative">
+                            <div className="relative shrink-0">
                                 <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
-                                    <ShoppingBasket size={20} className="text-white" />
+                                    <ShoppingBasket size={18} className="text-white" />
                                 </div>
                                 {count > 0 && (
-                                    <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-yellow-400 text-gray-900 text-xs font-bold flex items-center justify-center animate-bounce-subtle">
+                                    <div className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-yellow-400 text-gray-900 text-[10px] font-bold flex items-center justify-center animate-bounce-subtle border-2 border-emerald-600">
                                         {count}
                                     </div>
                                 )}
                             </div>
 
-                            <div className="text-left">
-                                <p className="text-white font-semibold text-sm leading-tight">
-                                    {count}개 영양제 선택됨
+                            <div className="text-left min-w-0 flex-1">
+                                <p className="text-white font-bold text-xs sm:text-sm leading-tight truncate">
+                                    {count}개 선택됨
                                 </p>
-                                <p className="text-white/70 text-xs">
+                                <p className="text-white/70 text-[10px] sm:text-xs truncate">
                                     {count < 2
-                                        ? "2개 이상 선택하면 분석할 수 있어요"
+                                        ? "2개 이상 선택 필요"
                                         : isExpanded
                                             ? "탭하여 접기"
-                                            : `최대 ${MAX_BASKET_SIZE}개 · 탭하여 목록 보기`}
+                                            : `최대 ${MAX_BASKET_SIZE}개 · 상세 보기`}
                                 </p>
                             </div>
                         </button>
@@ -113,9 +113,10 @@ export default function FloatingBasketBar({ onAnalyze }: FloatingBasketBarProps)
                         {count > 0 && (
                             <button
                                 onClick={clearBasket}
-                                className="text-white/60 hover:text-white/90 transition-colors p-2 rounded-lg hover:bg-white/10"
+                                className="text-white/40 hover:text-white/90 transition-colors p-1.5 rounded-lg hover:bg-white/10 shrink-0"
+                                title="전체 삭제"
                             >
-                                <X size={16} />
+                                <X size={14} />
                             </button>
                         )}
 
@@ -124,7 +125,7 @@ export default function FloatingBasketBar({ onAnalyze }: FloatingBasketBarProps)
                             onClick={onAnalyze}
                             disabled={count < 2 || isAnalyzing}
                             className={cn(
-                                "rounded-xl font-bold text-sm px-5 py-2.5 h-auto",
+                                "rounded-xl font-bold text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-2.5 h-auto shrink-0",
                                 "bg-white text-emerald-700 hover:bg-yellow-50",
                                 "shadow-lg shadow-black/20",
                                 "disabled:opacity-50 disabled:cursor-not-allowed",
@@ -133,14 +134,15 @@ export default function FloatingBasketBar({ onAnalyze }: FloatingBasketBarProps)
                             )}
                         >
                             {isAnalyzing ? (
-                                <span className="flex items-center gap-1.5">
-                                    <FlaskConical size={15} className="animate-spin" />
-                                    분석 중...
+                                <span className="flex items-center gap-1">
+                                    <FlaskConical size={14} className="animate-spin" />
+                                    <span className="hidden xs:inline">분석 중...</span>
+                                    <span className="xs:hidden">분석...</span>
                                 </span>
                             ) : (
-                                <span className="flex items-center gap-1.5">
-                                    <Sparkles size={15} />
-                                    궁합 분석하기
+                                <span className="flex items-center gap-1">
+                                    <Sparkles size={14} />
+                                    분석하기
                                 </span>
                             )}
                         </Button>

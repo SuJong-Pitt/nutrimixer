@@ -7,12 +7,14 @@
   --color-emerald-300: #6ee7b7;
   --color-emerald-400: #34d399;
   --color-emerald-500: #10b981;
-  --color-emerald-600: #059669;
   --color-emerald-700: #047857;
   --color-teal-400: #2dd4bf;
   --color-teal-500: #14b8a6;
   --color-teal-600: #0d9488;
   --color-cyan-600: #0891b2;
+
+  /* Custom breakpoints */
+  --breakpoint-xs: 375px;
 }
 
 @layer base {

@@ -63,48 +63,122 @@ const interactionTypeConfig = {
 } as const;
 
 /** 점수 링 컴포넌트 */
+/** 점수 링 컴포넌트 - 프리미엄 그래디언트 및 글로우 버전 */
 function ScoreRing({ score }: { score: number }) {
-    const radius = 60;
+    const radius = 70;
+    const strokeWidth = 12;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (score / 100) * circumference;
 
+    const getColor = (s: number) => {
+        if (s >= 70) return ["#10b981", "#34d399", "rgba(16, 185, 129, 0.4)"]; // Emerald
+        if (s >= 40) return ["#f59e0b", "#fbbf24", "rgba(245, 158, 11, 0.4)"]; // Amber
+        return ["#ef4444", "#f87171", "rgba(239, 68, 68, 0.4)"]; // Red
+    };
+
+    const [mainColor, lightColor, glowColor] = getColor(score);
+
     return (
-        <div className="relative flex items-center justify-center w-48 h-48 md:w-56 md:h-56">
-            <svg className="w-full h-full transform -rotate-90 drop-shadow-[0_0_15px_rgba(52,211,153,0.2)]">
+        <div className="relative flex items-center justify-center w-56 h-56 md:w-64 md:h-64 select-none">
+            {/* 배경 글로우 레이어 */}
+            <div
+                className="absolute inset-0 rounded-full opacity-20 blur-3xl transition-colors duration-1000"
+                style={{ backgroundColor: mainColor }}
+            />
+
+            <svg viewBox="0 0 180 180" className="w-full h-full transform -rotate-90 filter drop-shadow-[0_0_8px_rgba(0,0,0,0.3)]">
+                <defs>
+                    <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor={mainColor} />
+                        <stop offset="100%" stopColor={lightColor} />
+                    </linearGradient>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                        <feMerge>
+                            <feMergeNode in="coloredBlur" />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                {/* 베이스 내부 링 */}
                 <circle
-                    cx="50%"
-                    cy="50%"
+                    cx="90"
+                    cy="90"
                     r={radius}
-                    stroke="currentColor"
-                    strokeWidth="10"
+                    stroke="rgba(255,255,255,0.05)"
+                    strokeWidth={strokeWidth}
                     fill="transparent"
-                    className="text-white/5"
                 />
+
+                {/* 점수 링 (배경 글로우용) */}
                 <circle
-                    cx="50%"
-                    cy="50%"
+                    cx="90"
+                    cy="90"
                     r={radius}
-                    stroke="currentColor"
-                    strokeWidth="10"
+                    stroke={mainColor}
+                    strokeWidth={strokeWidth}
+                    fill="transparent"
+                    strokeDasharray={circumference}
+                    className="opacity-20"
+                    style={{
+                        strokeDashoffset: offset,
+                        filter: "blur(4px)",
+                        transition: "stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                    }}
+                    strokeLinecap="round"
+                />
+
+                {/* 메인 프로그레스 링 */}
+                <circle
+                    cx="90"
+                    cy="90"
+                    r={radius}
+                    stroke="url(#scoreGradient)"
+                    strokeWidth={strokeWidth}
                     fill="transparent"
                     strokeDasharray={circumference}
                     style={{
                         strokeDashoffset: offset,
-                        transition: "stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                        transition: "stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
                     }}
                     strokeLinecap="round"
-                    className={cn(
-                        score >= 70
-                            ? "text-emerald-400"
-                            : score >= 40
-                                ? "text-amber-400"
-                                : "text-red-400"
-                    )}
+                    filter="url(#glow)"
                 />
+
+                {/* 끝점 포인트 장식 */}
+                {score > 0 && (
+                    <circle
+                        cx={90 + radius * Math.cos((score / 100) * 2 * Math.PI - Math.PI / 2)}
+                        cy={90 + radius * Math.sin((score / 100) * 2 * Math.PI - Math.PI / 2)}
+                        r="3"
+                        fill="white"
+                        className="animate-pulse shadow-white"
+                        style={{
+                            transition: "all 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                        }}
+                    />
+                )}
             </svg>
-            <div className="absolute flex flex-col items-center justify-center text-white">
-                <span className="text-5xl md:text-6xl font-black tracking-tighter drop-shadow-md">{score}</span>
-                <span className="text-[11px] md:text-xs uppercase font-black text-white/40 tracking-[0.2em] mt-1">아이 스코어</span>
+
+            {/* 점수 텍스트 영역 */}
+            <div className="absolute flex flex-col items-center justify-center text-white text-rendering-optimizeLegibility">
+                <motion.div
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
+                >
+                    <div className="relative">
+                        <span className="text-6xl md:text-7xl font-black tracking-tighter tabular-nums drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                            {score}
+                        </span>
+                        <span className="absolute -top-1 -right-4 text-sm font-bold text-white/40">pts</span>
+                    </div>
+                </motion.div>
+                <div className="flex flex-col items-center mt-1">
+                    <div className="h-0.5 w-8 bg-gradient-to-r from-transparent via-white/20 to-transparent mb-1.5" />
+                    <span className="text-[10px] md:text-xs uppercase font-black text-white/50 tracking-[0.3em] pl-[0.3em]">AI SCORE</span>
+                </div>
             </div>
         </div>
     );
@@ -317,7 +391,8 @@ export default function AnalysisResults({ result, coupangProducts = [] }: Analys
                             </div>
 
                             <div className="relative">
-                                <div className="absolute inset-0 bg-indigo-500/20 blur-3xl rounded-full scale-75 animate-pulse-slow" />
+                                {/* 스코어 링 뒤의 네온 효과 */}
+                                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 via-emerald-500/20 to-cyan-500/20 blur-[100px] rounded-full scale-110 pointer-events-none" />
                                 <ScoreRing score={result.score} />
                             </div>
                         </div>

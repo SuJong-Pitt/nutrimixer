@@ -38,7 +38,10 @@ export const useBasketStore = create<BasketState>()(
                 const { selectedIngredients } = get();
                 if (selectedIngredients.length >= MAX_BASKET_SIZE) return;
                 if (selectedIngredients.some((i) => i.id === ingredient.id)) return;
-                set({ selectedIngredients: [...selectedIngredients, ingredient] });
+                set({
+                    selectedIngredients: [...selectedIngredients, ingredient],
+                    hasResult: false // 바구니 변경 시 결과 초기화
+                });
             },
 
             removeIngredient: (id) => {

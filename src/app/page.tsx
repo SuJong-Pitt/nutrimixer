@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { Search, Pill, ChevronDown, Info, Sparkles } from "lucide-react";
+import { Search, Pill, ChevronDown, Info, Sparkles, RefreshCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import IngredientCard from "@/components/IngredientCard";
 import FloatingBasketBar from "@/components/FloatingBasketBar";
@@ -36,6 +36,7 @@ export default function HomePage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("all");
+  const [showAllPopular, setShowAllPopular] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
 
   const [dbIngredients, setDbIngredients] = useState<Ingredient[]>([]);
@@ -57,7 +58,7 @@ export default function HomePage() {
     fetchIngredients();
   }, []);
 
-  const { selectedIngredients, isAnalyzing, hasResult, setAnalyzing, setHasResult } =
+  const { selectedIngredients, isAnalyzing, hasResult, setAnalyzing, setHasResult, clearBasket } =
     useBasketStore();
 
   // 필터링 로직
@@ -249,6 +250,22 @@ export default function HomePage() {
             </div>
           </div>
 
+          {/* 분석 결과 리셋 버튼 (결과가 있을 때만 표시) */}
+          {hasResult && (
+            <div className="mt-6 animate-fade-in">
+              <button
+                onClick={() => {
+                  clearBasket();
+                  searchRef.current?.focus();
+                }}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-bold transition-all hover:-translate-y-0.5"
+              >
+                <RefreshCcw size={14} />
+                결과 리셋하고 처음부터 다시하기
+              </button>
+            </div>
+          )}
+
           {/* 통계 배지 */}
           <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
             {[
@@ -278,25 +295,8 @@ export default function HomePage() {
        * MAIN CONTENT
        * ============================================================ */}
       <main className="mx-auto max-w-2xl px-4 py-8">
-        {/* ---- 인기 영양제 (홈화면 우선 표시) ---- */}
-        {searchQuery === "" && selectedCategory === "all" && (
-          <div className="mb-8 animate-fade-in-up">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles size={18} className="text-amber-500" />
-              <h2 className="text-base font-bold text-gray-700">
-                많이 찾는 영양제
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger-children">
-              {popularIngredients.map((ing) => (
-                <IngredientCard key={ing.id} ingredient={ing} />
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* ---- 카테고리 필터 ---- */}
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-8 -mx-4 px-4 active:cursor-grabbing">
+        <div className="flex gap-2 overflow-x-auto md:overflow-visible md:flex-wrap pb-4 mb-4 -mx-4 px-4 md:mx-0 md:px-0 active:cursor-grabbing scrollbar-hide">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.key}
@@ -314,6 +314,43 @@ export default function HomePage() {
             </button>
           ))}
         </div>
+
+        {/* ---- 인기 영양제 (홈화면 우선 표시) ---- */}
+        {searchQuery === "" && selectedCategory === "all" && (
+          <div className="mb-8 animate-fade-in-up">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Sparkles size={18} className="text-amber-500" />
+                <h2 className="text-base font-bold text-gray-700">
+                  많이 찾는 영양제
+                </h2>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="hidden md:block text-[10px] text-gray-400 font-bold uppercase tracking-widest">Selected Popular Picks</span>
+                <span className="md:hidden text-[10px] text-gray-400 font-bold uppercase tracking-widest">Swipe Left</span>
+                {popularIngredients.length > 8 && (
+                  <button
+                    onClick={() => setShowAllPopular(!showAllPopular)}
+                    className="hidden md:block text-xs text-emerald-600 font-bold hover:underline"
+                  >
+                    {showAllPopular ? "접기" : "전체보기"}
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className={cn(
+              "flex gap-3 overflow-x-auto md:overflow-visible md:grid md:grid-cols-4 pb-4 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide",
+              !showAllPopular && "md:max-h-none"
+            )}>
+              {(showAllPopular ? popularIngredients : popularIngredients.slice(0, 8)).map((ing) => (
+                <div key={ing.id} className="w-[160px] md:w-full flex-shrink-0">
+                  <IngredientCard ingredient={ing} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mb-4">
           <div className="flex items-center justify-between mb-3">
