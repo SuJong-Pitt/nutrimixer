@@ -185,7 +185,7 @@ export default function HomePage() {
       {/* ============================================================
        * HERO SECTION
        * ============================================================ */}
-      <section className="relative overflow-hidden pb-20 pt-16 md:pt-24 md:pb-32 bg-[#209B8A] texture-grain">
+      <section className="relative overflow-hidden pb-32 pt-16 md:pt-24 md:pb-48 bg-[#209B8A] texture-grain">
         {/* =======================================================
          * 럭셔리 청록/에메랄드 그라데이션 베이스 (User Custom)
          * ======================================================= */}
@@ -204,7 +204,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-[#0A4145]/40 pointer-events-none mix-blend-multiply" />
 
         {/* 하단 페이드 아웃 - 아래 섹션(bg-gray-50)과 자연스럽게 연결 */}
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-gray-50 via-gray-50/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-gray-50 via-gray-50/60 to-transparent pointer-events-none" />
 
         <div className="relative mx-auto max-w-2xl px-4 text-center">
           {/* 로고 */}
@@ -413,6 +413,6 @@ export default function HomePage() {
        * 플로팅 바구니 바 (하단 고정)
        * ============================================================ */}
       <FloatingBasketBar onAnalyze={handleAnalyze} />
-    </div>
+    </div >
   );
 }

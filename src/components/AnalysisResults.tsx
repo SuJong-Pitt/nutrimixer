@@ -161,23 +161,29 @@ function ScoreRing({ score }: { score: number }) {
                 )}
             </svg>
 
-            {/* 점수 텍스트 영역 */}
             <div className="absolute flex flex-col items-center justify-center text-white text-rendering-optimizeLegibility">
                 <motion.div
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
                 >
-                    <div className="relative">
-                        <span className="text-6xl md:text-7xl font-black tracking-tighter tabular-nums drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                    <div className="relative group/score">
+                        {/* 텍스트 글로우 배경 */}
+                        <div className="absolute inset-0 blur-2xl bg-white/10 rounded-full scale-110 group-hover/score:bg-white/20 transition-all duration-500" />
+
+                        <span className={cn(
+                            "relative block text-7xl md:text-8xl font-[1000] tracking-tighter tabular-nums leading-none",
+                            "bg-clip-text text-transparent bg-gradient-to-b from-white via-white 90% to-white/80",
+                            "drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
+                        )}>
                             {score}
                         </span>
-                        <span className="absolute -top-1 -right-4 text-sm font-bold text-white/40">pts</span>
+                        <span className="absolute -top-1 -right-6 text-sm font-black text-white/40 tracking-widest">PTS</span>
                     </div>
                 </motion.div>
-                <div className="flex flex-col items-center mt-1">
-                    <div className="h-0.5 w-8 bg-gradient-to-r from-transparent via-white/20 to-transparent mb-1.5" />
-                    <span className="text-[10px] md:text-xs uppercase font-black text-white/50 tracking-[0.3em] pl-[0.3em]">AI SCORE</span>
+                <div className="flex flex-col items-center mt-3">
+                    <div className="h-0.5 w-10 bg-gradient-to-r from-transparent via-white/30 to-transparent mb-2" />
+                    <span className="text-[11px] md:text-xs uppercase font-[1000] text-white/60 tracking-[0.4em] pl-[0.4em] drop-shadow-sm">AI PROTOCOL</span>
                 </div>
             </div>
         </div>
@@ -365,7 +371,11 @@ export default function AnalysisResults({ result, coupangProducts = [] }: Analys
                                     <span className="text-sm font-black text-indigo-200 uppercase tracking-[0.2em] drop-shadow-sm">AI 정밀 궁합 분석 리포트</span>
                                 </div>
 
-                                <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                                <h2 className={cn(
+                                    "text-4xl md:text-6xl font-[1000] tracking-tighter leading-[1.1] pb-1",
+                                    "bg-clip-text text-transparent bg-gradient-to-b from-white via-white 85% to-white/90",
+                                    "drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)] drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]"
+                                )}>
                                     {result.score >= 70
                                         ? "최상의 조합입니다"
                                         : result.score >= 40
