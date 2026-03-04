@@ -185,30 +185,32 @@ export default function HomePage() {
       {/* ============================================================
        * HERO SECTION
        * ============================================================ */}
-      <section className="relative overflow-hidden pb-32 pt-16 md:pt-24 md:pb-48 bg-[#209B8A] texture-grain">
+      <section className="relative overflow-hidden pb-20 pt-10 md:pt-16 md:pb-28 bg-[#239E8A] texture-grain">
         {/* =======================================================
-         * 럭셔리 청록/에메랄드 그라데이션 베이스 (User Custom)
+         * 자연스럽고 깊이 있는 에메랄드 리퀴드 배경
          * ======================================================= */}
-        {/* 베이스 그라데이션: 사용자가 제공한 세련된 청록 빛 */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#2BB194] via-[#239E8A] to-[#127278] pointer-events-none" />
+        {/* 베이스: 부드러운 수평 그라데이션 */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2BB194] via-[#239E8A] to-[#127278] pointer-events-none" />
 
-        {/* 부드러운 오로라/블러 오브젝트 (Floating Fluid Shapes) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none mix-blend-overlay opacity-60">
-          <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-[#A7F3D0]/40 blur-[120px] rounded-full animate-pulse-slow" />
-          <div className="absolute top-[30%] right-[-20%] w-[50%] h-[70%] bg-[#0B5C60]/60 blur-[150px] rounded-full animate-pulse-slow" style={{ animationDelay: "3s" }} />
-          <div className="absolute bottom-[-10%] left-[20%] w-[40%] h-[40%] bg-emerald-400/30 blur-[100px] rounded-full animate-pulse-slow" style={{ animationDelay: "1.5s" }} />
+        {/* 오로라 레이어: 더 크고 부드러운 블러 오브젝트로 자연스러운 색감 변화 유도 */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* 상단 밝은 빛 */}
+          <div className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-emerald-300/20 blur-[130px] rounded-full animate-pulse-slow" />
+          {/* 중앙 부드러운 하이라이트 */}
+          <div className="absolute top-[20%] right-[10%] w-[60%] h-[60%] bg-[#A7F3D0]/10 blur-[150px] rounded-full animate-pulse-slow" style={{ animationDelay: "2s" }} />
+          {/* 하단 깊이감 있는 어두운 톤 (기존 multiply 대신 자연스럽게 배치) */}
+          <div className="absolute -bottom-[10%] left-[20%] w-[50%] h-[50%] bg-[#064E3B]/20 blur-[120px] rounded-full animate-pulse-slow" style={{ animationDelay: "4s" }} />
         </div>
 
-        {/* 고급스러운 빛 번짐 (Light Streaks) 및 다크 비네팅 */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent skew-y-12 scale-150 pointer-events-none mix-blend-overlay" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-[#0A4145]/40 pointer-events-none mix-blend-multiply" />
+        {/* 아주 미세한 프리즘 광택 (Subtle Bloom) */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.15),transparent_70%)] pointer-events-none" />
 
-        {/* 하단 페이드 아웃 - 아래 섹션(bg-gray-50)과 자연스럽게 연결 */}
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-gray-50 via-gray-50/60 to-transparent pointer-events-none" />
+        {/* 하단 섹션(bg-gray-50)과의 초자연적 전환 (Smooth Easing Gradient) */}
+        <div className="absolute inset-x-0 bottom-0 h-48 pointer-events-none bg-gradient-to-t from-gray-50 via-gray-50/80 via-gray-50/40 via-transparent to-transparent" />
 
         <div className="relative mx-auto max-w-2xl px-4 text-center">
           {/* 로고 */}
-          <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="flex items-center justify-center gap-2 mb-4">
             <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/30">
               <Pill size={22} className="text-white" />
             </div>
@@ -267,24 +269,29 @@ export default function HomePage() {
           )}
 
           {/* 통계 배지 */}
-          <div className="flex items-center justify-center gap-2 mt-6 flex-wrap">
+          <div className="flex items-center justify-center gap-3 mt-8 flex-wrap">
             {[
-              { label: "영양제 종류", value: isLoadingList ? "..." : `${dbIngredients.length}종` },
-              { label: "무료 분석", value: "무제한" },
-              { label: "결과 확인", value: "실시간" },
+              { label: "영양제 종류", value: isLoadingList ? "..." : `${dbIngredients.length}종`, icon: <Pill size={14} /> },
+              { label: "무료 분석", value: "무제한", icon: <Sparkles size={14} /> },
+              { label: "결과 확인", value: "실시간", icon: <RefreshCcw size={14} /> },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="flex items-center gap-1.5 bg-white/15 backdrop-blur-sm rounded-full px-2.5 py-1.5 border border-white/20"
+                className="flex items-center gap-2.5 bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2.5 border border-white/30 shadow-lg shadow-black/5 hover:bg-white/30 transition-colors"
               >
-                <span className="text-white/60 text-[10px] sm:text-xs">{stat.label}</span>
-                <span className="text-white font-bold text-xs sm:text-sm">{stat.value}</span>
+                <div className="text-yellow-300">
+                  {stat.icon}
+                </div>
+                <div className="flex flex-col items-start leading-tight">
+                  <span className="text-white/70 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-0.5">{stat.label}</span>
+                  <span className="text-white font-extrabold text-sm sm:text-base">{stat.value}</span>
+                </div>
               </div>
             ))}
           </div>
 
           {/* 스크롤 다운 힌트 */}
-          <div className="mt-8 animate-bounce">
+          <div className="mt-4 animate-bounce">
             <ChevronDown size={24} className="text-white/50 mx-auto" />
           </div>
         </div>
