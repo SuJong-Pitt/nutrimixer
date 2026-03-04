@@ -66,124 +66,132 @@ const interactionTypeConfig = {
 /** 점수 링 컴포넌트 - 프리미엄 그래디언트 및 글로우 버전 */
 function ScoreRing({ score }: { score: number }) {
     const radius = 70;
-    const strokeWidth = 12;
+    const strokeWidth = 10;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (score / 100) * circumference;
 
     const getColor = (s: number) => {
-        if (s >= 70) return ["#10b981", "#34d399", "rgba(16, 185, 129, 0.4)"]; // Emerald
-        if (s >= 40) return ["#f59e0b", "#fbbf24", "rgba(245, 158, 11, 0.4)"]; // Amber
-        return ["#ef4444", "#f87171", "rgba(239, 68, 68, 0.4)"]; // Red
+        if (s >= 70) return ["#10b981", "#34d399", "rgba(16, 185, 129, 0.5)"]; // Emerald/Green
+        if (s >= 40) return ["#f59e0b", "#fbbf24", "rgba(245, 158, 11, 0.5)"]; // Amber
+        return ["#ef4444", "#f87171", "rgba(239, 68, 68, 0.5)"]; // Red
     };
 
     const [mainColor, lightColor, glowColor] = getColor(score);
 
     return (
-        <div className="relative flex items-center justify-center w-56 h-56 md:w-64 md:h-64 select-none">
-            {/* 배경 글로우 레이어 */}
+        <div className="relative flex items-center justify-center w-64 h-64 md:w-72 md:h-72 select-none">
+            {/* 주변 네온 오라 (Deep Glow) */}
             <div
-                className="absolute inset-0 rounded-full opacity-20 blur-3xl transition-colors duration-1000"
+                className="absolute inset-0 rounded-full opacity-30 blur-[100px] transition-all duration-1000 scale-125"
                 style={{ backgroundColor: mainColor }}
             />
 
-            <svg viewBox="0 0 180 180" className="w-full h-full transform -rotate-90 filter drop-shadow-[0_0_8px_rgba(0,0,0,0.3)]">
+            <svg viewBox="0 0 180 180" className="w-full h-full transform -rotate-90">
                 <defs>
                     <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stopColor={mainColor} />
                         <stop offset="100%" stopColor={lightColor} />
                     </linearGradient>
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                        <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
+                    <filter id="neonGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="4" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
                     </filter>
                 </defs>
 
-                {/* 베이스 내부 링 */}
+                {/* 베이스 가이드 링 (Track) */}
                 <circle
                     cx="90"
                     cy="90"
                     r={radius}
-                    stroke="rgba(255,255,255,0.05)"
+                    stroke="rgba(255,255,255,0.08)"
                     strokeWidth={strokeWidth}
                     fill="transparent"
                 />
 
-                {/* 점수 링 (배경 글로우용) */}
+                {/* 메인 프로그레스 링 (Outer Glow layer) */}
                 <circle
                     cx="90"
                     cy="90"
                     r={radius}
                     stroke={mainColor}
-                    strokeWidth={strokeWidth}
+                    strokeWidth={strokeWidth + 2}
                     fill="transparent"
                     strokeDasharray={circumference}
-                    className="opacity-20"
                     style={{
                         strokeDashoffset: offset,
-                        filter: "blur(4px)",
-                        transition: "stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                        transition: "stroke-dashoffset 2.5s cubic-bezier(0.2, 1, 0.3, 1)",
+                        opacity: 0.3,
+                        filter: "blur(8px)"
                     }}
                     strokeLinecap="round"
                 />
 
-                {/* 메인 프로그레스 링 */}
+                {/* 메인 프로그레스 링 (Inner Glow layer) */}
                 <circle
                     cx="90"
                     cy="90"
                     r={radius}
-                    stroke="url(#scoreGradient)"
+                    stroke={lightColor}
                     strokeWidth={strokeWidth}
                     fill="transparent"
                     strokeDasharray={circumference}
                     style={{
                         strokeDashoffset: offset,
-                        transition: "stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                        transition: "stroke-dashoffset 2.5s cubic-bezier(0.2, 1, 0.3, 1)",
+                        filter: "url(#neonGlow)"
                     }}
                     strokeLinecap="round"
-                    filter="url(#glow)"
                 />
 
-                {/* 끝점 포인트 장식 */}
-                {score > 0 && (
-                    <circle
-                        cx={90 + radius * Math.cos((score / 100) * 2 * Math.PI - Math.PI / 2)}
-                        cy={90 + radius * Math.sin((score / 100) * 2 * Math.PI - Math.PI / 2)}
-                        r="3"
-                        fill="white"
-                        className="animate-pulse shadow-white"
-                        style={{
-                            transition: "all 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
-                        }}
-                    />
-                )}
+                {/* 프로그레스 포인트 (End dot) */}
+                <motion.circle
+                    cx={90 + radius * Math.cos((score / 100) * 2 * Math.PI - Math.PI / 2)}
+                    cy={90 + radius * Math.sin((score / 100) * 2 * Math.PI - Math.PI / 2)}
+                    r="4.5"
+                    fill="white"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 1, duration: 0.5 }}
+                    style={{
+                        transition: "all 2.5s cubic-bezier(0.2, 1, 0.3, 1)",
+                        filter: "drop-shadow(0 0 8px white)"
+                    }}
+                />
             </svg>
 
-            <div className="absolute flex flex-col items-center justify-center text-white text-rendering-optimizeLegibility">
-                <motion.div
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
-                >
-                    <div className="relative group/score">
-                        {/* 텍스트 글로우 배경 */}
-                        <div className="absolute inset-0 blur-2xl bg-white/10 rounded-full scale-110 group-hover/score:bg-white/20 transition-all duration-500" />
+            {/* 내부 텍스트 레이아웃 */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
+                <div className="relative flex flex-col items-center">
+                    {/* 상단 PTS 레이블 - 강조 버전 */}
+                    <div className="absolute -top-3 -right-10 flex flex-col items-start">
+                        <span className="text-xs md:text-sm font-black text-yellow-300 tracking-widest drop-shadow-[0_0_8px_rgba(253,224,71,0.5)]">
+                            PTS
+                        </span>
+                    </div>
 
+                    {/* 중앙 메인 점수 - 크기 최적화 */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8, duration: 1 }}
+                        className="relative"
+                    >
                         <span className={cn(
-                            "relative block text-7xl md:text-8xl font-[1000] tracking-tighter tabular-nums leading-none",
-                            "bg-clip-text text-transparent bg-gradient-to-b from-white via-white 90% to-white/80",
-                            "drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)] drop-shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
+                            "text-6xl md:text-7xl font-[1000] tracking-tight tabular-nums leading-none",
+                            "bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400",
+                            "filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
                         )}>
                             {score}
                         </span>
-                        <span className="absolute -top-1 -right-6 text-sm font-black text-white/40 tracking-widest">PTS</span>
+                    </motion.div>
+
+                    {/* 하단 구분선 및 타이틀 - 부각 버전 */}
+                    <div className="flex flex-col items-center w-full mt-4">
+                        <div className="h-[2px] w-14 bg-gradient-to-r from-transparent via-white to-transparent mb-3 shadow-[0_0_10px_white]" />
+                        <span className="text-[11px] md:text-13px font-black text-white tracking-[0.6em] pl-[0.6em] leading-none uppercase filter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                            AI PROTOCOL
+                        </span>
                     </div>
-                </motion.div>
-                <div className="flex flex-col items-center mt-3">
-                    <div className="h-0.5 w-10 bg-gradient-to-r from-transparent via-white/30 to-transparent mb-2" />
-                    <span className="text-[11px] md:text-xs uppercase font-[1000] text-white/60 tracking-[0.4em] pl-[0.4em] drop-shadow-sm">AI PROTOCOL</span>
                 </div>
             </div>
         </div>
