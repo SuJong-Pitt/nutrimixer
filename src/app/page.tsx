@@ -181,32 +181,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* ============================================================
        * HERO SECTION
        * ============================================================ */}
-      <section className="relative overflow-hidden pb-20 pt-10 md:pt-16 md:pb-28 bg-[#239E8A] texture-grain">
-        {/* =======================================================
-         * 자연스럽고 깊이 있는 에메랄드 리퀴드 배경
-         * ======================================================= */}
-        {/* 베이스: 부드러운 수평 그라데이션 */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2BB194] via-[#239E8A] to-[#127278] pointer-events-none" />
-
-        {/* 오로라 레이어: 더 크고 부드러운 블러 오브젝트로 자연스러운 색감 변화 유도 */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {/* 상단 밝은 빛 */}
-          <div className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-emerald-300/20 blur-[130px] rounded-full animate-pulse-slow" />
-          {/* 중앙 부드러운 하이라이트 */}
-          <div className="absolute top-[20%] right-[10%] w-[60%] h-[60%] bg-[#A7F3D0]/10 blur-[150px] rounded-full animate-pulse-slow" style={{ animationDelay: "2s" }} />
-          {/* 하단 깊이감 있는 어두운 톤 (기존 multiply 대신 자연스럽게 배치) */}
-          <div className="absolute -bottom-[10%] left-[20%] w-[50%] h-[50%] bg-[#064E3B]/20 blur-[120px] rounded-full animate-pulse-slow" style={{ animationDelay: "4s" }} />
-        </div>
-
-        {/* 아주 미세한 프리즘 광택 (Subtle Bloom) */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.15),transparent_70%)] pointer-events-none" />
-
-        {/* 하단 섹션(bg-gray-50)과의 초자연적 전환 (Smooth Easing Gradient) */}
-        <div className="absolute inset-x-0 bottom-0 h-48 pointer-events-none bg-gradient-to-t from-gray-50 via-gray-50/80 via-gray-50/40 via-transparent to-transparent" />
+      <section className="relative overflow-hidden pb-20 pt-10 md:pt-16 md:pb-28 bg-gradient-to-b from-[#239E8A] via-[#86C2B1] to-white">
 
         <div className="relative mx-auto max-w-2xl px-4 text-center">
           {/* 로고 */}
@@ -217,38 +196,48 @@ export default function HomePage() {
             <span className="text-white font-black text-xl tracking-tight">Nutri-Mixer</span>
           </div>
 
-          {/* 헤드라인 */}
-          <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight px-2">
+          <div className="inline-block px-4 py-1.5 rounded-full bg-emerald-100/50 border border-emerald-200/50 mb-6 backdrop-blur-sm animate-fade-in">
+            <span className="text-emerald-800 text-xs md:text-sm font-bold tracking-wider uppercase">AI Analysis Engine v2.0</span>
+          </div>
+
+          <h1 className="text-3xl md:text-6xl font-black text-emerald-950 mb-6 leading-[1.15] px-2 tracking-tight">
             내 영양제들,
             <br />
-            <span className="text-yellow-300">같이 먹어도 괜찮을까?</span>
+            <span className="relative inline-block mt-2">
+              <span className="relative z-10 text-white px-6 py-2 block">
+                같이 먹어도 괜찮을까?
+              </span>
+              <span className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-3xl shadow-xl shadow-emerald-200/50 -rotate-1 scale-x-105"></span>
+            </span>
           </h1>
 
-          <p className="text-white/80 text-base md:text-lg mb-8 leading-relaxed">
-            AI 기반 영양제 궁합 분석으로
-            <br className="md:hidden" />{" "}
-            최적의 조합을 찾아보세요 ✨
+          <p className="text-emerald-900/60 text-base md:text-xl mb-10 leading-relaxed font-medium max-w-lg mx-auto">
+            매일 먹는 영양제, AI가 성분 간의 충돌과
+            <br />
+            <span className="text-emerald-700 font-bold">시너지를 실시간으로 분석</span>해드립니다. ✨
           </p>
 
           {/* 검색창 */}
-          <div className="relative max-w-lg mx-auto group">
-            <div className="absolute inset-0 bg-white/20 blur-xl rounded-[2.5rem] opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
-            <div className="relative flex items-center bg-white/10 backdrop-blur-2xl border border-white/30 rounded-[2.5rem] p-1.5 shadow-2xl transition-all duration-300 group-focus-within:bg-white/20 group-focus-within:border-white/50">
-              <div className="pl-4 flex items-center justify-center text-white/60">
-                <Search size={20} />
+          <div className="relative max-w-xl mx-auto group">
+            {/* Outer Glow */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-[3rem] blur opacity-20 group-focus-within:opacity-40 transition duration-500" />
+
+            <div className="relative flex items-center bg-white border-2 border-emerald-100/80 rounded-[3rem] p-2 shadow-xl transition-all duration-300 group-focus-within:border-emerald-500 group-focus-within:ring-4 group-focus-within:ring-emerald-500/10">
+              <div className="pl-5 flex items-center justify-center text-emerald-500">
+                <Search size={22} className="group-focus-within:scale-110 transition-transform" />
               </div>
               <Input
                 ref={searchRef}
                 type="text"
-                placeholder="어떤 영양제를 찾으시나요? (비타민C, 오메가...)"
+                placeholder="영양제 이름을 입력하세요 (예: 비타민D, 루테인...)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-transparent border-none text-white placeholder:text-white/40 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm md:text-lg h-12 flex-1 font-medium"
+                className="bg-transparent border-none text-emerald-950 placeholder:text-emerald-200 focus-visible:ring-0 focus-visible:ring-offset-0 text-base md:text-xl h-14 flex-1 font-bold px-4"
               />
-              <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/20 rounded-full text-[10px] font-bold text-white/60 uppercase tracking-widest mr-2">
-                <span>Press</span>
-                <span className="bg-white/20 px-1.5 py-0.5 rounded leading-none">Enter</span>
-              </div>
+              <button className="hidden md:flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-bold text-sm transition-all active:scale-95 shadow-lg shadow-emerald-200">
+                <span>검색하기</span>
+                <ChevronDown size={14} className="-rotate-90" />
+              </button>
             </div>
           </div>
 
@@ -269,22 +258,22 @@ export default function HomePage() {
           )}
 
           {/* 통계 배지 */}
-          <div className="flex items-center justify-center gap-3 mt-8 flex-wrap">
+          <div className="flex items-center justify-center gap-4 mt-12 flex-wrap">
             {[
-              { label: "영양제 종류", value: isLoadingList ? "..." : `${dbIngredients.length}종`, icon: <Pill size={14} /> },
-              { label: "무료 분석", value: "무제한", icon: <Sparkles size={14} /> },
-              { label: "결과 확인", value: "실시간", icon: <RefreshCcw size={14} /> },
+              { label: "분석 라이브러리", value: isLoadingList ? "..." : `${dbIngredients.length}종 +`, icon: <Pill size={14} /> },
+              { label: "무료 서비스", value: "무제한 분석", icon: <Sparkles size={14} /> },
+              { label: "처리 속도", value: "0.5초 이내", icon: <RefreshCcw size={14} /> },
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="flex items-center gap-2.5 bg-white/20 backdrop-blur-md rounded-2xl px-4 py-2.5 border border-white/30 shadow-lg shadow-black/5 hover:bg-white/30 transition-colors"
+                className="flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-2xl px-5 py-3 border border-emerald-50 md:hover:bg-white transition-all duration-300 shadow-sm"
               >
-                <div className="text-yellow-300">
+                <div className="p-2 bg-emerald-50 rounded-xl text-emerald-600">
                   {stat.icon}
                 </div>
                 <div className="flex flex-col items-start leading-tight">
-                  <span className="text-white/70 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-0.5">{stat.label}</span>
-                  <span className="text-white font-extrabold text-sm sm:text-base">{stat.value}</span>
+                  <span className="text-emerald-800/40 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider mb-0.5">{stat.label}</span>
+                  <span className="text-emerald-950 font-extrabold text-sm sm:text-base">{stat.value}</span>
                 </div>
               </div>
             ))}
