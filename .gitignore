@@ -44,3 +44,7 @@ next-env.d.ts
 mock-data.ts
 .env.local
 .agent
+validate.js
+find_slug.js
+validate_interactions.js
+check_relations.js
